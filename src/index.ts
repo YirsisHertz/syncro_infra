@@ -35,7 +35,10 @@ fastify.get("/healt", () => {
 
 routes.forEach((route) => fastify.route(route));
 
-await fastify.listen({ port: +(process.env.PORT || 3000) });
+await fastify.listen({
+  port: +(process.env.PORT || 3000),
+  host: process.env.FASTIFY_ADDRESS || "127.0.0.1"
+});
 
 mongoose
   .connect(process.env.DATABASE_URL || "", {

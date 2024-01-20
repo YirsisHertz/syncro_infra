@@ -4,12 +4,14 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm i
+RUN npm i -g pnpm
+RUN pnpm i
 
-RUN npm run build
+RUN pnpm build
 
 ENV PORT=3000
+ENV FASTIFY_ADDRESS=0.0.0.0
 
 EXPOSE 3000
 
-CMD [ "npm", "start" ]
+CMD [ "pnpm", "start" ]
