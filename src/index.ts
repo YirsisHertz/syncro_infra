@@ -1,6 +1,9 @@
 import cors from "@fastify/cors";
 import fastifyEnv from "@fastify/env";
 import Fastify from "fastify";
+
+import mongoose from "mongoose";
+
 import { routes } from "./routes/index.js";
 
 const fastify = Fastify({
@@ -33,3 +36,11 @@ fastify.get("/healt", () => {
 routes.forEach((route) => fastify.route(route));
 
 await fastify.listen({ port: +(process.env.PORT || 3000) });
+
+mongoose
+  .connect(process.env.DATABASE_URL || "", {
+    user: process.env.DATABASE_USERNAME,
+    pass: process.env.DATABASE_PASSWORD
+  })
+  .then(() => console.log("connected"))
+  .catch((error) => console.log(error));

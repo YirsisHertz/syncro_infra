@@ -1,2 +1,1 @@
-import { getAllWebCards as r } from "../webcard/presentation/webcard.controllers.js";
-export var webcardRoutes = [{ url: "/webcard", method: "GET", handler: r }];
+import{createWebCards as r,getAllWebCards as e}from"../webcard/presentation/webcard.controllers.js";export var webcardRoutes=[{url:"/webcard",method:"GET",handler:e},{url:"/webcard",method:"POST",handler:r}];
