@@ -5,6 +5,7 @@ export interface WebCardColors {
 
 export interface WebCardModelEntity {
   id: string;
+  active: boolean;
   name: string;
   image: string;
   url: string;
@@ -28,4 +29,8 @@ export interface CreateWebCardDTO {
   image: string;
   primary_color: string;
   secondary_color: string;
+}
+
+export interface DeleteWebCardDTO {
+  id: string;
 }

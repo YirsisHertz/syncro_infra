@@ -2,6 +2,7 @@ import { Schema, model } from "mongoose";
 import { webcardModelToEntityAdapter } from "../../adapters/webcardModel.adapter.js";
 import {
   CreateWebCardDTO,
+  DeleteWebCardDTO,
   WebCardEntity,
   WebCardModelEntity
 } from "../../domain/entities/webcard.entity.js";
@@ -42,26 +43,53 @@ const WebCardModel = model<WebCardModelEntity>(
     updatedAt: {
       type: Date,
       default: Date.now()
+    },
+    active: {
+      type: Boolean,
+      default: true
     }
   })
 );
 
 export class WebCardMongoModel extends WebCardRepository {
-  findAll(): Promise<WebCardEntity[]> {
-    throw new Error("Method not implemented.");
+  async findAll(): Promise<WebCardEntity[]> {
+    const webcardList: WebCardEntity[] = (
+      await WebCardModel.find({
+        active: true
+      })
+    ).map((doc) => webcardModelToEntityAdapter(doc));
+
+    return webcardList;
   }
 
-  async create(webcard: CreateWebCardDTO): Promise<WebCardEntity> {
-    const newWebCard = new WebCardModel(webcard);
-
-    // await newWebCard.save();
+  async create(webcardDTO: CreateWebCardDTO): Promise<WebCardEntity> {
+    const newWebCard = new WebCardModel(webcardDTO);
+    await newWebCard.save();
 
     const data = webcardModelToEntityAdapter(newWebCard);
 
     return { ...data };
   }
 
-  delete(): Promise<WebCardEntity> {
-    throw new Error("Method not implemented.");
+  async delete(webcardDTO: DeleteWebCardDTO): Promise<WebCardEntity> {
+    const { id } = webcardDTO;
+    const updateWebCard =
+      await WebCardModel.findByIdAndUpdate<WebCardModelEntity>(
+        id,
+        {
+          active: false
+        },
+        {
+          new: true
+        }
+      );
+
+    if (!updateWebCard) {
+      throw new Error("WebCard not exist");
+    }
+
+    const data = webcardModelToEntityAdapter(updateWebCard);
+
+    return { ...data };
   }
 }
