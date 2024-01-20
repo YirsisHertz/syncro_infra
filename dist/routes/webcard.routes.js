@@ -1,1 +1,0 @@
-import{createWebCards as r,deleteWebCards as e,getAllWebCards as d}from"../webcard/presentation/webcard.controllers.js";export var webcardRoutes=[{url:"/webcard",method:"GET",handler:d},{url:"/webcard",method:"POST",handler:r},{url:"/webcard/:id",method:"DELETE",handler:e}];
